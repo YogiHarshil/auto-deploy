@@ -34,8 +34,8 @@ jobs:
       - name: Configure SSH Key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/my-key.pem
-          chmod 600 ~/.ssh/my-key.pem
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/my-aws-key.pem
+          chmod 600 ~/.ssh/my-aws-key.pem
 
       - name: Run Ansible Playbook
         run: |
