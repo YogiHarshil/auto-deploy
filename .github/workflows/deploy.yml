@@ -40,4 +40,5 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           cd ansible-setup
+          export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-playbook -i inventory nginx-setup.yml
