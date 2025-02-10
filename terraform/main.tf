@@ -46,7 +46,7 @@ resource "aws_instance" "nginx_server" {
   provisioner "local-exec" {
     command = <<EOT
       echo "[web]" > ../ansible-setup/inventory
-      echo "nginx-server ansible_host=${self.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/my-key.pem " >> ../ansible-setup/inventory
+      echo "nginx-server ansible_host=${self.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/my-key.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no' " >> ../ansible-setup/inventory
     EOT
   }
 }
