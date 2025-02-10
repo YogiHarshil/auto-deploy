@@ -38,6 +38,10 @@ jobs:
           chmod 600 ~/.ssh/my-key.pem
           ssh-keygen -y -f ~/.ssh/my-key.pem > ~/.ssh/my-key.pub || echo "Invalid key"
 
+      - name: Add SSH Host Key to Known Hosts
+        run: |
+          ssh-keyscan -H $(grep -oP '(?<=ansible_host=)[^ ]+' ansible-setup/inventory) >> ~/.ssh/known_hosts
+      
       - name: Run Ansible Playbook
         run: |
           cd ansible-setup
