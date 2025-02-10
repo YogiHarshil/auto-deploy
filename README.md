@@ -1,1 +1,1 @@
-Automatic Deploy Nginx On AWS EC2. For that, I have using Terraform and Ansible.
+Automatic Deployment of Nginx on EC2 using Terraform and Ansible.
