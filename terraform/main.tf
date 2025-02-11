@@ -2,8 +2,18 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-# Define the Security Group first
+# Data block to reference an existing security group
+data "aws_security_group" "existing_sg" {
+  # Replace with the name or ID of your existing security group
+  filter {
+    name   = "group-name"
+    values = ["allow_ssh_http"]  # Change this to the name of your existing security group
+  }
+}
+
+# Define the Security Group only if it does not exist
 resource "aws_security_group" "allow_ssh_http" {
+  count       = length(data.aws_security_group.existing_sg.id) > 0 ? 0 : 1
   name        = "allow_ssh_http"
   description = "Allow SSH and HTTP traffic"
 
@@ -35,8 +45,10 @@ resource "aws_instance" "nginx_server" {
   instance_type = "t2.micro"
   key_name      = "my-key"
   
-  # Use `vpc_security_group_ids` instead of `security_groups`
-  vpc_security_group_ids = [aws_security_group.allow_ssh_http.id]
+  # Use the existing security group if it exists, otherwise use the newly created one
+  vpc_security_group_ids = [
+    length(data.aws_security_group.existing_sg.id) > 0 ? data.aws_security_group.existing_sg.id : aws_security_group.allow_ssh_http[0].id
+  ]
 
   tags = {
     Name = "nginx-server"
